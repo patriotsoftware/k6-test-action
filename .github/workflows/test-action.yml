@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run k6
-        uses: ./.github/actions/k6-tests
+        uses: ./
         id: run-k6-tests
         with:
           k6-script: ./example_script.js
