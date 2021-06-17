@@ -1,0 +1,30 @@
+name: K6 Tests
+description: Runs K6 tests
+
+inputs:
+  k6-script: 
+    description: Location of the script to run with k6
+    required: true
+  base-url-override:
+    description: Will override the value of any variable named BASE_URL
+    required: false
+  k6-flags:
+    description: Additional flags to pass to the K6 command
+    required: false
+outputs: 
+  initial-base-url: 
+    description: Initial BASE_URL found in K6 script
+    value: ${{ steps.k6-tests.outputs.initial-base-url }}
+  resulting-base-url:
+    description: Resulting BASE_URL found in K6 script
+    value: ${{ steps.k6-tests.outputs.resulting-base-url }}
+runs:
+  using: "composite"
+  steps:
+    - id: k6-tests
+      env: 
+        INPUT_BASE_URL_OVERRIDE: ${{ inputs.base-url-override }}
+        INPUT_K6_FLAGS: ${{ inputs.k6-flags }}
+        INPUT_K6_SCRIPT: ${{ inputs.k6-script }}
+      run: ${{ github.action_path }}/action.sh
+      shell: bash
