@@ -1,0 +1,29 @@
+name: Test k6-test-action
+on: 
+  push:
+    branches:
+      - "*"
+      - "!main"
+  workflow_dispatch:
+jobs:
+  test-action:
+    name: Test k6-test-action
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run k6
+        uses: ./.github/actions/k6-tests
+        id: run-k6-tests
+        with:
+          k6-script: ./example_script.js
+          k6-flags: --iterations 5
+          base-url-override: https://test.k6.io
+      - name: Verify Results
+        run: | 
+          echo "Checking initial-base-url"
+          echo "${{ steps.run-k6-tests.outputs.initial-base-url }}" | grep "https://www.google.com"
+          echo "✅ K6 BASE_URL pass-through succeeded."
+
+          echo "Checking resulting-base-url"
+          echo "${{ steps.run-k6-tests.outputs.resulting-base-url }}" | grep "https://test.k6.io"
+          echo "✅ K6 BASE_URL change succeeded."
