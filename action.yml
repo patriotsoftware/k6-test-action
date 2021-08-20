@@ -11,6 +11,9 @@ inputs:
   k6-flags:
     description: Additional flags to pass to the K6 command
     required: false
+  additional-mount:
+    description: Additional mount point (directory) utilized by the K6 script.
+    required: false
 outputs: 
   initial-base-url: 
     description: Initial BASE_URL found in K6 script
@@ -26,5 +29,6 @@ runs:
         INPUT_BASE_URL_OVERRIDE: ${{ inputs.base-url-override }}
         INPUT_K6_FLAGS: ${{ inputs.k6-flags }}
         INPUT_K6_SCRIPT: ${{ inputs.k6-script }}
+        INPUT_ADDITIONAL_MOUNT: ${{ inputs.additional-mount }}
       run: ${{ github.action_path }}/action.sh
       shell: bash
