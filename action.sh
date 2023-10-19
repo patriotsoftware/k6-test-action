@@ -12,7 +12,7 @@ sleep 60
 echo "Starting K6 tests."
 
 if [[ -n "${INPUT_ADDITIONAL_MOUNT}" ]]; then
-    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} -v $(pwd)/${INPUT_ADDITIONAL_MOUNT}:/k6/${INPUT_ADDITIONAL_MOUNT} loadimpact/k6 run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
+    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} -v $(pwd)/${INPUT_ADDITIONAL_MOUNT}:/k6/${INPUT_ADDITIONAL_MOUNT} public.ecr.aws/z3t7n7z5/loadimpact/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
 else
-    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} loadimpact/k6 run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
+    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} public.ecr.aws/z3t7n7z5/loadimpact/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
 fi
