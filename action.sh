@@ -11,8 +11,10 @@ echo "Starting K6 after 60s warm-up delay..."
 sleep 60
 echo "Starting K6 tests."
 
+acct=$(aws sts get-caller-identity --query 'Account' --output text)
+
 if [[ -n "${INPUT_ADDITIONAL_MOUNT}" ]]; then
-    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} -v $(pwd)/${INPUT_ADDITIONAL_MOUNT}:/k6/${INPUT_ADDITIONAL_MOUNT} public.ecr.aws/z3t7n7z5/loadimpact/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
+    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} -v $(pwd)/${INPUT_ADDITIONAL_MOUNT}:/k6/${INPUT_ADDITIONAL_MOUNT} ${acct}.dkr.ecr.us-east-1.amazonaws.com/docker-hub/grafana/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
 else
-    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} public.ecr.aws/z3t7n7z5/loadimpact/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
+    docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} ${acct}.dkr.ecr.us-east-1.amazonaws.com/docker-hub/grafana/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
 fi
