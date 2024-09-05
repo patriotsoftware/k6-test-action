@@ -12,6 +12,7 @@ sleep 60
 echo "Starting K6 tests."
 
 acct=$(aws sts get-caller-identity --query 'Account' --output text)
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${acct}.dkr.ecr.us-east-1.amazonaws.com
 
 if [[ -n "${INPUT_ADDITIONAL_MOUNT}" ]]; then
     docker run -v $(pwd)/${INPUT_K6_SCRIPT}:/k6/${INPUT_K6_SCRIPT} -v $(pwd)/${INPUT_ADDITIONAL_MOUNT}:/k6/${INPUT_ADDITIONAL_MOUNT} ${acct}.dkr.ecr.us-east-1.amazonaws.com/docker-hub/grafana/k6:latest run ${INPUT_K6_FLAGS} /k6/${INPUT_K6_SCRIPT}
