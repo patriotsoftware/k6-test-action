@@ -1,7 +1,8 @@
 #!/bin/bash
 
-set -e
-if [[ -n "${INPUT_BASE_URL_OVERRIDE}" ]]; then 
+set -exv
+
+if [[ -n "${INPUT_BASE_URL_OVERRIDE}" ]]; then
     echo "initial-base-url=$(grep "BASE_URL" ${INPUT_K6_SCRIPT} | head -1)" >> $GITHUB_OUTPUT
     sed -i "s,const BASE_URL =.*,const BASE_URL = \"${INPUT_BASE_URL_OVERRIDE}\";,g" $INPUT_K6_SCRIPT
     echo "resulting-base-url=$(grep "BASE_URL" ${INPUT_K6_SCRIPT} | head -1)" >> $GITHUB_OUTPUT
